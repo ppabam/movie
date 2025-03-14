@@ -12,3 +12,4 @@ def gen_url(dt="20120101", url_param={}):
         url = url + f"&{k}={v}"
 
     return url
+
