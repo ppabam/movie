@@ -1,5 +1,6 @@
 import os
 import requests
+import pandas as pd
 
 BASE_URL = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json"
 KEY=os.getenv("MOVIE_KEY")
@@ -19,3 +20,8 @@ def call_api(dt="20120101", url_param={}):
     data = requests.get(url)
     j = data.json()
     return j['boxOfficeResult']['dailyBoxOfficeList']
+
+def list2df(data: list, dt: str):
+    df = pd.DataFrame(data)
+    df['dt'] = dt
+    return df

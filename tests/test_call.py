@@ -1,5 +1,6 @@
-from movie.api.call import gen_url, call_api
+from movie.api.call import gen_url, call_api, list2df
 import os
+import pandas as pd
 
 def test_gen_url_default():
     r = gen_url()
@@ -21,10 +22,13 @@ def test_call_api():
     for e in r:
         assert isinstance(e, dict)
 
-# def test_list2df():
-#     data = call_api()
-#     df = list2df(data)
-#     assert isinstance(df, pd.DataFrame)
-#     assert len(data) == len(df)
-#     assert set(data[0].keys()).issubset(set(df.columns))
+def test_list2df():
+    ymd = "20210101"
+    data = call_api(dt=ymd)
+    df = list2df(data, ymd)
+    assert isinstance(df, pd.DataFrame)
+    assert len(data) == len(df)
+    assert set(data[0].keys()).issubset(set(df.columns))
+    assert "dt" in df.columns, "df 컬럼이 있어야 함"
+    assert (df["dt"] == ymd).all(), "입력된 날짜 값이 컬럼  존재 해야 함"
 
