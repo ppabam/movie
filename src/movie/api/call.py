@@ -25,3 +25,9 @@ def list2df(data: list, dt: str):
     df = pd.DataFrame(data)
     df['dt'] = dt
     return df
+
+def save_df(df, base_path):
+    df.to_parquet(base_path, partition_cols=['dt'])
+    save_path = f"{base_path}/dt={df['dt'][0]}"
+    return save_path
+
