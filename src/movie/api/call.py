@@ -21,9 +21,11 @@ def call_api(dt="20120101", url_param={}):
     j = data.json()
     return j['boxOfficeResult']['dailyBoxOfficeList']
 
-def list2df(data: list, dt: str):
+def list2df(data: list, dt: str, url_params={}):
     df = pd.DataFrame(data)
     df['dt'] = dt
+    for k,v in url_params.items():
+        df[k] = v
     
     num_cols = ['rnum', 'rank', 'rankInten', 'salesAmt', 'audiCnt',
                 'audiAcc', 'scrnCnt', 'showCnt', 'salesShare', 'salesInten',
@@ -35,8 +37,10 @@ def list2df(data: list, dt: str):
 
     return df
 
-def save_df(df, base_path):
-    df.to_parquet(base_path, partition_cols=['dt'])
-    save_path = f"{base_path}/dt={df['dt'][0]}"
+def save_df(df, base_path, partitions=['dt']):
+    df.to_parquet(base_path, partition_cols=partitions)
+    save_path = base_path
+    for p in partitions:
+        save_path = save_path + f"/{p}={df[p][0]}"
     return save_path
 
