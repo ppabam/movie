@@ -45,3 +45,20 @@ def test_save_df():
     assert 'dt' in pd.read_parquet(base_path).columns
 
 
+
+def test_list2df_check_num():
+    """df 에 숫자 컬럼을 변환 하고 잘 변환 되었는나 확인"""
+    num_cols = ['rnum', 'rank', 'rankInten', 'salesAmt', 'audiCnt',
+                'audiAcc', 'scrnCnt', 'showCnt', 'salesShare', 'salesInten',
+                'salesChange', 'audiInten', 'audiChange']
+    
+    # hint : 변환 : df[num_cols].apply(pd.to_numeric)
+    # hint : 확인 : is_numeric_dtype <- pandas ...
+    ymd = "20210101"
+    data = call_api(dt=ymd)
+    df = list2df(data, ymd)
+    for c in num_cols:
+        assert df[c].dtype in ['int64', 'float64'], f"{c} 가 숫자가 아님"
+
+
+
