@@ -45,6 +45,22 @@ def test_save_df():
     assert 'dt' in pd.read_parquet(base_path).columns
 
 
+def test_save_df_url_params():
+    ymd = "20210101"
+    url_params = {"multiMovieYn": "Y"}
+    base_path = "~/temp/movie"
+    
+    # TO Airflow Dag
+    data = call_api(dt=ymd, url_param=url_params)
+    df = list2df(data, ymd, url_params)
+    partitions = ['dt'] + list(url_params.keys())
+    r = save_df(df, base_path, partitions)
+    
+    assert r == f"{base_path}/dt={ymd}/multiMovieYn=Y"
+    print("save_path", r)
+    read_df = pd.read_parquet(r)
+    assert 'dt' not in read_df.columns
+    assert 'dt' in pd.read_parquet(base_path).columns
 
 def test_list2df_check_num():
     """df 에 숫자 컬럼을 변환 하고 잘 변환 되었는나 확인"""
