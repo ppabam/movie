@@ -1,6 +1,6 @@
 from movie.api.call import (
     gen_url, call_api, list2df, save_df,
-    fill_na_with_column, gen_unique, re_ranking
+    fill_na_with_column, gen_unique, re_ranking, fill_unique_ranking
 )
 import os
 import pandas as pd
@@ -99,4 +99,15 @@ def test_merge_df():
     assert new_ranking_df.iloc[0]['movieNm'] == '노량: 죽음의 바다'
     
 def test_merge_save():
-    pass # TODO ...
+    dt = "20240101"
+    PATH = f"~/data/movies/dailyboxoffice/dt={dt}"
+    df = pd.read_parquet(PATH)
+    
+    rdf = fill_unique_ranking(df, dt)
+    assert len(rdf) == 25
+    assert rdf.iloc[0]['movieNm'] == '노량: 죽음의 바다'
+    
+    save_path = save_df(rdf, "~/temp/data/merge", partitions=['dt'])
+    assert save_path == f"~/temp/data/merge/dt={dt}"
+    
+    
