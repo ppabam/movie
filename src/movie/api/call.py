@@ -52,7 +52,7 @@ def fill_na_with_column(origin_df, c_name):
     return df
 
 def gen_unique(df: pd.DataFrame, drop_columns: list) -> pd.DataFrame:
-    df_drop = df.drop(columns=['rnum', 'rank', 'rankInten', 'salesShare'])
+    df_drop = df.drop(columns=drop_columns)
     unique_df = df_drop.drop_duplicates()
     return unique_df
 
