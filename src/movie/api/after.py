@@ -26,6 +26,15 @@ def fillna_meta(previous_df: pd.DataFrame, current_df: pd.DataFrame) -> pd.DataF
     return meta_df
 
 
+def combine_df(meta_df: pd.DataFrame, current_df: pd.DataFrame, ds_nodash: str) -> pd.DataFrame:
+    merged_df = meta_df.merge(current_df, on="movieCd", how="left", suffixes=("_meta", "_current"))
+    merged_df["multiMovieYn"] = merged_df["multiMovieYn_meta"].combine_first(merged_df["multiMovieYn_current"])
+    merged_df["repNationCd"] = merged_df["repNationCd_meta"].combine_first(merged_df["repNationCd_current"])
+    final_df = merged_df[current_df.columns]
+    final_df['dt'] = ds_nodash
+    return final_df
+
+
 def read_df_or_none(parquet_path: str) -> pd.DataFrame:
     if os.path.exists(parquet_path):
         df = pd.read_parquet(parquet_path)

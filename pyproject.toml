@@ -1,11 +1,11 @@
 [project]
 name = "movie"
-version = "2503.20.1"
+version = "2503.20.2"
 description = "Default template for PDM package"
 authors = [
     {name = "ppabam", email = "tom@diginori.com"},
 ]
-dependencies = ["requests>=2.32.3", "pandas>=2.2.3", "pyarrow>=19.0.1"]
+dependencies = ["requests>=2.32.3", "pandas>=2.2.3", "pyarrow>=19.0.1", "fastparquet>=2024.11.0", "matplotlib>=3.10.1"]
 requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "MIT"}
