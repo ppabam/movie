@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from movie.api.after import fillna_meta, read_df_or_none, save_with_mkdir
+from movie.api.after import combine_df, fillna_meta, read_df_or_none, save_with_mkdir
 
 
 def test_fillna_meta():
@@ -72,3 +72,11 @@ def test_save_with_mkdir():
     
     # 테스트 후 파일 삭제
     os.remove(saved_path)
+    
+def test_combine_df():
+    meta_df = pd.read_parquet("~/data/movie_after/meta/meta.parquet")
+    movie_df = pd.read_parquet("~/data/movies/dailyboxoffice/dt=20240101")
+    
+    assert len(movie_df) == 50
+    r = combine_df(meta_df=meta_df, current_df=movie_df, ds_nodash="20240101")
+    assert len(r) == 50
