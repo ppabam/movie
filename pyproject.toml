@@ -1,6 +1,6 @@
 [project]
 name = "movie"
-version = "2503.20.2"
+version = "2503.21.1"
 description = "Default template for PDM package"
 authors = [
     {name = "ppabam", email = "tom@diginori.com"},
